@@ -25,7 +25,15 @@ require("lazy").setup({
 			-- refer to the configuration section below
 		},
 	},
-	{ "L3MON4D3/LuaSnip" },
+	{
+		"L3MON4D3/LuaSnip",
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+		},
+		config = function()
+			require("luasnip.loaders.from_vscode").lazy_load()
+		end,
+	},
 	{
 		"hrsh7th/nvim-cmp",
 		-- load cmp on InsertEnter
@@ -63,8 +71,8 @@ require("lazy").setup({
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
+					{ name = "luasnip" }, -- For luasnip users.
 					-- { name = "vsnip" }, -- For vsnip users.
-					-- { name = 'luasnip' }, -- For luasnip users.
 					-- { name = 'ultisnips' }, -- For ultisnips users.
 					-- { name = 'snippy' }, -- For snippy users.
 				}, {
@@ -98,6 +106,7 @@ require("lazy").setup({
 				-- Customize or remove this keymap to your liking
 				"<leader>fm",
 				function()
+					vim.cmd(":w")
 					require("conform").format({ async = true, lsp_fallback = true })
 				end,
 				desc = "Format buffer",
@@ -238,7 +247,7 @@ require("lazy").setup({
 
 			-- Global mappings.
 			-- See `:help vim.diagnostic.*` for documentation on any of the below functions
-			vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
+			vim.keymap.set("n", "<space>ee", vim.diagnostic.open_float)
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 			vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 			vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
@@ -266,6 +275,7 @@ require("lazy").setup({
 					end, opts)
 					vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
 					vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+					vim.keymap.set({ "n", "i", "v" }, "<f2>", vim.lsp.buf.rename, opts)
 					vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
 					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 					vim.keymap.set("n", "<space>f", function()
@@ -284,4 +294,5 @@ require("lazy").setup({
 		lazy = false,
 	},
 	{ "jiangmiao/auto-pairs", lazy = false },
+	{ "akinsho/git-conflict.nvim", config = true },
 })

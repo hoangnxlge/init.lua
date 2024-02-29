@@ -3,7 +3,7 @@
 
 local map = vim.keymap.set
 local allModes = { "n", "i", "v" }
-map("n", "<leader>qq", "<cmd>wqa!<cr>", { desc = "Save and quit" })
+map("n", "<leader>qq", "<cmd>wa<cr><bar><cmd>qa<cr>", { desc = "Save and quit" })
 map(allModes, "<c-h>", "<c-w>h", { desc = "Focus on left window" })
 map(allModes, "<c-j>", "<c-w>j", { desc = "Focus on down window" })
 map(allModes, "<c-k>", "<c-w>k", { desc = "Focus on up window" })
@@ -11,6 +11,8 @@ map(allModes, "<c-l>", "<c-w>l", { desc = "Focus on right window" })
 map("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
 map(allModes, "<c-z>", "<cmd>u<cr>", { desc = "Undo" })
 map(allModes, "<c-f>", "<esc>:%s/", { desc = "Find and replace" })
+map('v', "<c-c>", "y", { desc = "Copy" })
+map('v', "<c-x>", "d", { desc = "Cut" })
 
 -- Keymaps for telescope
 local builtin = require("telescope.builtin")
