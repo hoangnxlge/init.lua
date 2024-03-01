@@ -25,7 +25,46 @@ require("lazy").setup({
 			-- refer to the configuration section below
 		},
 	},
-	{ "L3MON4D3/LuaSnip" },
+	{
+		"L3MON4D3/LuaSnip",
+		dependencies = { "rafamadriz/friendly-snippets" },
+		config = function()
+			require("luasnip.loaders.from_vscode").lazy_load({
+				paths = { "./snippets" },
+			})
+			require("luasnip.loaders.from_vscode").lazy_load()
+		end,
+		keys = function()
+			local ls = require("luasnip")
+			return {
+				{
+					"<c-k>",
+					function()
+						ls.expand()
+					end,
+					desc = "Expand snippet",
+				},
+				{
+					"<S-Tab>",
+					function()
+						ls.jump(-1)
+					end,
+					mode = { "i", "v" },
+				},
+				{
+					"<Tab>",
+					function()
+						if ls.expand_or_jumpable() then
+							ls.jump(1)
+						else
+							ls.jump(-1)
+						end
+					end,
+					mode = { "i", "v" },
+				},
+			}
+		end,
+	},
 	{
 		"hrsh7th/nvim-cmp",
 		-- load cmp on InsertEnter
@@ -35,6 +74,7 @@ require("lazy").setup({
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
+			"saadparwaiz1/cmp_luasnip",
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -63,8 +103,8 @@ require("lazy").setup({
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
+					{ name = "luasnip" }, -- For luasnip users.
 					-- { name = "vsnip" }, -- For vsnip users.
-					-- { name = 'luasnip' }, -- For luasnip users.
 					-- { name = 'ultisnips' }, -- For ultisnips users.
 					-- { name = 'snippy' }, -- For snippy users.
 				}, {
@@ -83,10 +123,14 @@ require("lazy").setup({
 
 			-- Set up lspconfig.
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 			-- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 			--require("lspconfig")["dartls"].setup({
 			--	capabilities = capabilities,
 			--})
+			require("lspconfig").pyright.setup({
+				capabilities = capabilities,
+			})
 		end,
 	},
 	{
@@ -129,6 +173,11 @@ require("lazy").setup({
 		"williamboman/mason.nvim",
 		opts = {
 			ensure_installed = {
+				"stylua",
+				"black",
+				"dart-debug-adapter",
+				"isort",
+				"pyright",
 				"stylua",
 			},
 		},
@@ -222,7 +271,55 @@ require("lazy").setup({
 			"nvim-lua/plenary.nvim",
 			"stevearc/dressing.nvim", -- optional for vim.ui.select
 		},
-		config = true,
+		keys = {
+			{ "<f5>", "<cmd>Telescope flutter commands<cr>", desc = "Show all flutter commands" },
+		},
+		config = function()
+			require("flutter-tools").setup({
+				debugger = {
+					enabled = false,
+					run_via_dap = false,
+				},
+			})
+		end,
+	},
+	-- Debugging client
+	{
+		"mfussenegger/nvim-dap",
+		config = function()
+			local dap = require("dap")
+			-- Dart / Flutter
+			dap.adapters.dart = {
+				type = "executable",
+				command = "dart",
+				args = { "debug_adapter" },
+			}
+			dap.adapters.flutter = {
+				type = "executable",
+				command = "flutter",
+				args = { "debug_adapter" },
+			}
+			dap.configurations.dart = {
+				{
+					type = "dart",
+					request = "launch",
+					name = "Launch dart",
+					dartSdkPath = "C:/Users/hoang10.nguyen/fvm/default/bin/dart.bat", -- ensure this is correct
+					flutterSdkPath = "C:/Users/hoang10.nguyen/fvm/default/bin/flutter.bat", -- ensure this is correct
+					program = "${workspaceFolder}/lib/main.dart", -- ensure this is correct
+					cwd = "${workspaceFolder}",
+				},
+				{
+					type = "flutter",
+					request = "launch",
+					name = "Launch flutter",
+					dartSdkPath = "C:/Users/hoang10.nguyen/fvm/default/bin/dart.bat", -- ensure this is correct
+					flutterSdkPath = "C:/Users/hoang10.nguyen/fvm/default/bin/flutter.bat", -- ensure this is correct
+					program = "${workspaceFolder}/lib/main.dart", -- ensure this is correct
+					cwd = "${workspaceFolder}",
+				},
+			}
+		end,
 	},
 	{
 		"neovim/nvim-lspconfig",
@@ -238,7 +335,7 @@ require("lazy").setup({
 
 			-- Global mappings.
 			-- See `:help vim.diagnostic.*` for documentation on any of the below functions
-			vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
+			vim.keymap.set("n", "<space>ee", vim.diagnostic.open_float)
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 			vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 			vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
@@ -266,6 +363,7 @@ require("lazy").setup({
 					end, opts)
 					vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
 					vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+					vim.keymap.set({ "n", "i", "v" }, "<f2>", vim.lsp.buf.rename, opts)
 					vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
 					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 					vim.keymap.set("n", "<space>f", function()
@@ -284,4 +382,31 @@ require("lazy").setup({
 		lazy = false,
 	},
 	{ "jiangmiao/auto-pairs", lazy = false },
+	-- {
+	-- 	"nvim-treesitter/nvim-treesitter",
+	-- 	version = false,
+	-- 	build = function()
+	-- 		require("nvim-treesitter.install").update({ with_sync = true })
+	-- 	end,
+	-- 	config = function()
+	-- 		require("nvim-treesitter.configs").setup({
+	-- 			ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript" },
+	-- 			auto_install = false,
+	-- 			highlight = { enable = true, additional_vim_regex_highlighting = false },
+	-- 			incremental_selection = {
+	-- 				enable = true,
+	-- 				keymaps = {
+	-- 					init_selection = "<C-n>",
+	-- 					node_incremental = "<C-n>",
+	-- 					scope_incremental = "<C-s>",
+	-- 					node_decremental = "<C-m>",
+	-- 				},
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
 })

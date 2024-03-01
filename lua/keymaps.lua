@@ -18,4 +18,5 @@ map("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
 map("n", "<leader>fg", builtin.live_grep, { desc = "Search all text" })
 map("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
 map("n", "<leader>fh", builtin.help_tags, { desc = "Find help tags" })
+map("n", "<leader>fo", builtin.oldfiles, { desc = "Find recent files" })
 
