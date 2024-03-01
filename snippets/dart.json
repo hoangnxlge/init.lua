@@ -1,0 +1,460 @@
+{
+	// Place your snippets for dart here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	"Print to console": {
+		"prefix": "print with name",
+		"body": [
+			"print('AppLog: ${$1}')$2",
+		],
+		"description": "Print output to console with name"
+	},
+	"My snipped": {
+		"prefix": "apitry",
+		"body": [
+			"Try{$1} on ApiExeption catch(e){yield $2(e.displayError)} catch(e){yield $3(e.toString)};",
+		],
+	},
+	"class route": {
+		"prefix": "classroute",
+		"body": [
+			" class $1Route { static Widget get route => const $1Screen(); } ",
+		],
+		"description": "Create route for screen"
+	},
+	"factory fromJson": {
+		"prefix": "facFromJson",
+		"body": [
+			"  factory $1.fromJson(Map<String, dynamic> json) => _$$1FromJson(json); Map<String, dynamic> toJson() => _$$1ToJson(this);"
+		],
+		"description": "Create function after generate"
+	},
+	"class state for riverpod": {
+		"prefix": "classState riverpod",
+		"body": [
+			"part of '$1_provider.dart';\n",
+			"enum $2Status{initial, loading, success, error}",
+			"@freezed",
+			"class $2State with _$$2State {",
+			"\tconst factory $2State({",
+			"\t\t@Default($2Status.initial) final $2Status status,",
+			"\t\t@Default('') final String errMessage,",
+			"\t}) = _$2State;",
+			"}"
+		],
+		"description": "Create multiple State classes",
+	},
+	"class state for bloc": {
+		"prefix": "classState bloc",
+		"body": [
+			"part of '$1_provider.dart';\n",
+			"@freezed",
+			"class $2State with _$$2State {",
+			"\tconst factory $2State.initial() = _Initial;",
+			"\tconst factory $2State.loading() = _Loading;",
+			"\tconst factory $2State.success() = _Success;",
+			"\tconst factory $2State.error(String errMessage) = _Error;",
+			"}"
+		],
+		"description": "Create multiple State classes",
+	},
+	"try impliment": {
+		"prefix": "tryImpl",
+		"body": [
+			"try {",
+			"\tfinal settingsModel = await localSource.getSettings();",
+			"\treturn right(settingsModel.toEntity());",
+			"} on ServerException catch (e) {",
+			"\treturn left(ServerFailure(e.message, e.statusCode));",
+			"} on LocalException catch (e) {",
+			"\treturn left(LocalFailure(e.message));",
+			"} catch (e) {",
+			"\treturn left(UnknownFailure(e.toString()));",
+			"}",
+		],
+		"description": "try catch inside repository impliment"
+	},
+	"create new screen": {
+		"prefix": "class new page",
+		"body": [
+			"import 'package:flutter/material.dart';\n",
+			"class $1Route {",
+			"\tstatic Widget get route => const $1Page();",
+			"}\n",
+			"class $1Page extends StatefulWidget {",
+			"\tconst $1Page({Key? key}) : super(key: key);",
+			"\t@override",
+			"\tState<$1Page> createState() => _$1PageState();",
+			"}\n",
+			"class _$1PageState extends State<$1Page> {",
+			"\t@override",
+			"\tWidget build(BuildContext context) {",
+			"\t\treturn const Scaffold(",
+			"\t\t\tbody: Placeholder$2(),",
+			"\t\t);",
+			"\t}",
+			"}",
+		],
+		"description": "Create new screen"
+	},
+	"create data model": {
+		"prefix": "class dataModel",
+		"body": [
+			"import 'package:freezed_annotation/freezed_annotation.dart';",
+			"part '$1.g.dart';",
+			"part '$1.freezed.dart';",
+			"@freezed",
+			"class $2 with _$$2 {",
+			"\tconst $2._();",
+			"\tconst factory $2({$4,}) = _$2;",
+			"\tfactory $2.fromJson(Map<String, dynamic> json) => _$$2FromJson(json);",
+			"\tfactory $2.fromEntity($3 entity) => $2(",
+			"\t\tid: entity.id,",
+			"\t);",
+			"\t$3 toEntity() => $3(",
+			"\t\tid: id,",
+			"\t);}"
+		],
+	},
+	"impelemnt on event bloc": {
+		"prefix": "onBlocImplement",
+		"body": "void _on$1(_$1 event, Emitter emit) {}"
+	},
+	"Navigator push": {
+		"prefix": "Navigator push",
+		"body": [
+			"Navigator.of(context).push(",
+			"\tMaterialPageRoute(",
+			"\t\tbuilder: (_) => $1,",
+			"\t),",
+			");",
+		]
+	},
+	"Navigator push named": {
+		"prefix": "Navigator push named",
+		"body": "Navigator.of(context).pushNamed($1)"
+	},
+	"Navigator Pop": {
+		"prefix": "Navigator pop",
+		"body": "Navigator.pop(context)"
+	},
+	"Create equatable class": {
+		"prefix": "class equatable",
+		"body": [
+			"class $1 extends Equatable{",
+			"\t@override",
+			"\tList<Object?> get props => [];",
+			"}"
+		]
+	},
+	"build when": {
+		"prefix": "build when",
+		"body": [
+			"buildWhen: (_, current) => current.maybeWhen(",
+			"\t$1",
+			"\torElse: () => false,",
+			"),"
+		]
+	},
+	"state maybeWhen sizebox": {
+		"prefix": "state maybeWhen sizebox",
+		"body": [
+			"state.maybeWhen(",
+			"\t$1",
+			"\torElse: () => const SizedBox(),",
+			");"
+		]
+	},
+	"read bloc": {
+		"prefix": "read bloc",
+		"body": "late final bloc = context.read<$1Bloc>();"
+	},
+	"repository impelemnt": {
+		"prefix": "try repository implement",
+		"body": [
+			"if (await networkInfo.isConnected) {",
+			"\ttry {",
+			"\t\tfinal $1 = await remoteSource.$2;",
+			"\t\treturn Right($1);",
+			"\t} on ServerException catch (e) {",
+			"\t\treturn Left(e.toServerFailure());",
+			"\t}",
+			"} else {",
+			"\ttry {",
+			"\t\tfinal $1 = await localSource.$2;",
+			"\t\treturn Right($1);",
+			"\t} on CacheException catch (e) {",
+			"\treturn Left(e.toCacheFailure());",
+			"\t}",
+			"}"
+		],
+	},
+	"handle result using either": {
+		"prefix": "result fold",
+		"body": [
+			"result.fold(",
+			"\t(failure) => emit(_Error(failure.message??'')),",
+			"\t($2) => emit($1($2)),",
+			");"
+		],
+	},
+	"export feature": {
+		"prefix": "exports feature",
+		"body": [
+			"// models",
+			"export 'data/models/$1_model.dart';",
+			"\n// data sources",
+			"export 'data/data_sources/$1_client.dart';",
+			"export 'data/data_sources/$1_local_data_source.dart';",
+			"export 'data/data_sources/$1_remote_data_source.dart';",
+			"\n// repositories",
+			"export 'data/repositories/$1_repository_impl.dart';",
+			"export 'domain/repositories/$1_repository.dart';",
+			"\n// use cases",
+			"export 'domain/use_cases/get_$1_use_case.dart';",
+			"\n// bloc",
+			"export 'presentation/bloc/$1_bloc.dart';",
+		]
+	},
+	"regis feature inside getIt": {
+		"prefix": "regis feature",
+		"body": [
+			"void _regis$1Feature() {",
+			"\n// use cases",
+			"getIt.registerLazySingleton(() => Get$1UseCase(getIt()));",
+			"\n// repositories",
+			"getIt.registerLazySingleton<$1Repository>(() => $1RepositoryImpl(localSource: getIt(), remoteSource: getIt(), networkInfo: getIt(),),);",
+			"\n// data sources",
+			"getIt.registerLazySingleton<$1RemoteDataSource>(() => $1RemoteDataSourceImpl(client: getIt<$1Client>()),);",
+			"getIt.registerLazySingleton<$1Client>(()=>$1Client(getIt()));",
+			"getIt.registerLazySingleton<$1LocalDataSource>(() => $1LocalDataSourceImpl(getIt())));",
+			"\n// models adapter",
+			"Hive.registerAdapter($1ModelAdapter());",
+			"}",
+		],
+	},
+	"class use case": {
+		"prefix": "class use case",
+		"body": [
+			"class $1UseCase extends UseCase<$2, $3> {",
+			"final $4Repository repo;",
+			"$1UseCase(this.repo);",
+			"@override",
+			"Future<Either<Failure, $2>> call($3 params) => repo.$5;",
+			"}"
+		]
+	},
+	"convert model to entity": {
+		"prefix": "factory model to entity",
+		"body": [
+			"factory $1Model.fromEntity($1 entity) => $1Model(id: entity.id);",
+			"$1 toEntity() => $1(id: id);"
+		]
+	},
+	"textTheme": {
+		"prefix": "textTheme",
+		"body": "Theme.of(context).textTheme.$1"
+	},
+	"textTheme copyWith": {
+		"prefix": "textTheme copyWith",
+		"body": "Theme.of(context).textTheme.$1?.copyWith($2)"
+	},
+	"retrofit client": {
+		"prefix": "retrofit client",
+		"body": [
+			"import 'package:dio/dio.dart';",
+			"import 'package:retrofit/retrofit.dart';",
+			"part '$1_client.g.dart';",
+			"@RestApi()",
+			"abstract class $2Client {",
+			"factory $2Client(Dio dio, {String? baseUrl}) = _$2Client;",
+			"@POST('/')",
+			"Future<void> $3();",
+			"}",
+		]
+	},
+	"try local data source": {
+		"prefix": "try local data source",
+		"body": [
+			"try {",
+			"$1",
+			"} catch (e) {",
+			"\tthrow LocalException(e.toString());",
+			"}"
+		]
+	},
+	"future in repository": {
+		"prefix": "future in repository",
+		"body": [
+			"Future<Either<Failure, $1>> $2();"
+		]
+	},
+	"try remote in repository": {
+		"prefix": "try remote in repository",
+		"body": [
+			"try {",
+			"final $1 = await remoteSource.$2;",
+			"return right($1);",
+			"} on ServerException catch (e) {",
+			" return left(ServerFailure.fromException(e));",
+			"} catch (e) {",
+			"return left(UnknownFailure(e.toString()));",
+			"}"
+		]
+	},
+	"try local in repository": {
+		"prefix": "try local in repository",
+		"body": [
+			"try {",
+			"final $1 = await localSource.$2;",
+			"return right($1);",
+			"} on LocalException catch (e) {",
+			"return left(LocalFailure(e.message));",
+			"}"
+		]
+	},
+	"try in remote source": {
+		"prefix": "try in remote source",
+		"body": [
+			"try {",
+			"final $1 = await client.$2();",
+			"return $1;",
+			"} on DioError catch (e) {",
+			"throw ServerException.fromDioError(e);",
+			"} catch (e) {",
+			"throw Exception(e.toString());",
+			"}"
+		]
+	},
+	"safe call in repositories handle all the try catch": {
+		"prefix": "safe call",
+		"body": [
+			"return safeCall(() async {",
+			"$1",
+			"});"
+		]
+	},
+	"class repository implement": {
+		"prefix": "class repository implement",
+		"body": [
+			"class $1RepositoryImpl extends BaseRepository implements $1Repository {",
+			"\t$2",
+			"}"
+		]
+	},
+	"class retrofit client": {
+		"prefix": "class retrofit client",
+		"body": [
+			"import 'package:dio/dio.dart';",
+			"import 'package:retrofit/retrofit.dart';\n",
+			"part '$1_client.g.dart';",
+			"\n@RestApi()",
+			"abstract class $2Client {",
+			"\tfactory $2Client(Dio dio, {String? baseUrl}) = _$2Client;",
+			"\n\t@GET('/api/$1s')",
+			"\tFuture<{{name.pascalCase()}}Model> getAll$2s();",
+			"}",
+		],
+	},
+	"state listener": {
+		"prefix": "state listener",
+		"body": [
+			"LoadingDialog.hide();",
+			"state.whenOrNull(",
+			"\tloading: LoadingDialog.show,",
+			"\terror: (err) => AppSnackBar.show(message: err),",
+			");"
+		]
+	},
+	"widgetbook component": {
+		"prefix": "widgetbook component",
+		"body": [
+			"abstract class WidgetBook$1 {",
+			"\tstatic WidgetbookComponent get component {",
+			"\t\treturn WidgetbookComponent(",
+			"\t\t\tname: '$1',",
+			"\t\t\t\tuseCases: [",
+			"\t\t\t\t\tWidgetbookUseCase(",
+			"\t\t\t\t\t\tname: '$1',",
+			"\t\t\t\t\t\t\tbuilder: (context) => const Scaffold(",
+			"\t\t\t\t\t\t\tbody: Column(",
+			"\t\t\t\t\t\t\tmainAxisAlignment: MainAxisAlignment.center,",
+			"\t\t\t\t\t\t\tchildren: [Center(child: Text('data'),),],",
+			"\t\t\t\t\t\t),",
+			"\t\t\t\t\t),",
+			"\t\t\t\t),",
+			"\t\t\t],",
+			"\t\t);",
+			"\t}",
+			"}",
+		]
+	},
+	"sizedbox width 10": {
+		"prefix": "sizedbox width 10",
+		"body": "SizedBox(width: 10$1),"
+	},
+	"sizedbox height 10": {
+		"prefix": "sizedbox height 10",
+		"body": "SizedBox(height: 10$1),"
+	},
+	"commit message": {
+		"prefix": "commit message",
+		"body": [
+			"$1\n",
+			":Release Notes:",
+			"$1\n",
+			":Detailed Notes:",
+			"$1\n",
+			":Testing Performed:",
+			"N/A\n",
+			":QA Notes:",
+			"N/A\n",
+			":Issues Addressed:",
+			"[$2] $1",
+			"http://clm.lge.com/issue/browse/$2",
+		]
+	},
+	"class entity": {
+		"prefix": "class entity",
+		"body": [
+			"import 'package:freezed_annotation/freezed_annotation.dart';",
+			"part '$1_entity.g.dart';",
+			"part '$1_entity.freezed.dart';\n",
+			"@freezed",
+			"class $2Entity with _$$2Entity {",
+			"const factory $2Entity({",
+			"required String name,",
+			"required DateTime date,",
+			"required int id,",
+			"}) = _$2Entity;",
+			"factory $2Entity.fromJson(Map<String, dynamic> json) =>",
+			"_$$2EntityFromJson(json);",
+			"}"
+		]
+	},
+	"class notifier provider": {
+		"prefix": "class notifier provider",
+		"body": [
+			"import 'package:flutter_riverpod/flutter_riverpod.dart';",
+			"import 'package:freezed_annotation/freezed_annotation.dart';\n",
+			"part '$1_state.dart';",
+			"part '$1_provider.freezed.dart';\n",
+			"final $1Provier = AutoDisposeNotifierProvider<$3Notifier, $3State>(",
+  			"$3Notifier.new",
+			");\n",
+			"class $3Notifier extends AutoDisposeNotifier<$3State> {",
+			"@override",
+			"$3State build() {",
+			"\treturn const $3State();",
+			"}",
+			"}"
+		]
+	},
+	"add delay": {
+		"description": "add delay to dart code",
+		"prefix": "delay",
+		"body": "await Future.delayed(const Duration(seconds: 1$1))$2"
+	}
+}
